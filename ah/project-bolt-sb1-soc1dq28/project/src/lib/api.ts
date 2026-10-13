@@ -4,11 +4,13 @@ export const API_BASE_URL =
   (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/+\$/, '') ||
   (typeof window !== 'undefined' && !window.location.hostname.includes('localhost')
     ? (() => {
-        // This automatically extracts the clean project name 'infinitecognition'
-        const cleanName = window.location.hostname.split('.')[0].split('-')[0];
+        // Safe split that removes the final '-bice' suffix without breaking 'infinite-cognition'
+        const hostname = window.location.hostname.split('.')[0];
+        const cleanName = hostname.endsWith('-bice') ? hostname.slice(0, -5) : hostname;
         return `https://${cleanName}.onrender.com`;
       })()
     : 'http://localhost:8000');
+
 
 
 

@@ -1,8 +1,11 @@
 import type { StudentRecord, Intervention } from '@/types';
 
-export const API_BASE_URL =
+export const API_BASE_URL = 
   (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/+$/, '') ||
-  'http://localhost:8000';
+  (typeof window !== 'undefined' && !window.location.hostname.includes('localhost')
+    ? 'https://' + window.location.hostname.replace('.vercel.app', '.onrender.com') 
+    : 'http://localhost:8000');
+
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);

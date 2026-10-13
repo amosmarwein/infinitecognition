@@ -1,10 +1,16 @@
 import type { StudentRecord, Intervention } from '@/types';
 
 export const API_BASE_URL = 
-  (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/+$/, '') ||
+  (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/+\$/, '') ||
   (typeof window !== 'undefined' && !window.location.hostname.includes('localhost')
-    ? 'https://' + window.location.hostname.replace('.vercel.app', '.onrender.com') 
+    ? (() => {
+        // This automatically extracts the clean project name 'infinitecognition'
+        const cleanName = window.location.hostname.split('.')[0].split('-')[0];
+        return `https://${cleanName}.onrender.com`;
+      })()
     : 'http://localhost:8000');
+
+
 
 
 function isRecord(value: unknown): value is Record<string, unknown> {
